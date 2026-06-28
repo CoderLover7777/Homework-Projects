@@ -1,0 +1,172 @@
+<html>
+<head>
+  <title>Bank UI - Income & Expense Tracker</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .balance {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .balance h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+    .summary {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0;
+      gap: 10px;
+    }
+    .card {
+      flex: 1;
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .income {
+      color: green;
+      font-weight: bold;
+    }
+    .expense {
+      color: red;
+      font-weight: bold;
+    }
+    .form {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .form input, .form select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .form button {
+      width: 100%;
+      padding: 10px;
+      background: #007bff;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .form button:hover {
+      background: #0056b3;
+    }
+    .transactions {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .transaction {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    .transaction:last-child {
+      border-bottom: none;
+    }
+    .type-income {
+      color: green;
+    }
+    .type-expense {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Bank Dashboard</h1>
+  <div class="balance">
+    <p>Current Balance</p>
+    <h2 id="balance">₹0</h2>
+  </div>
+  <div class="summary">
+    <div class="card">
+      <p>Income</p>
+      <p class="income" id="income">₹0</p>
+    </div>
+    <div class="card">
+      <p>Expense</p>
+      <p class="expense" id="expense">₹0</p>
+    </div>
+  </div>
+  <div class="form">
+    <h3>Add Transaction</h3>
+    <input type="text" id="desc" placeholder="Description (e.g. Salary, Rent)" />
+    <input type="number" id="amount" placeholder="Amount" />
+    <select id="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+    <button onclick="addTransaction()">Add</button>
+  </div>
+  <div class="transactions">
+    <h3>Transactions</h3>
+    <div id="list"></div>
+  </div>
+</div>
+<script>
+  let balance = 0;
+  let income = 0;
+  let expense = 0;
+  function addTransaction() {
+    const desc = document.getElementById("desc").value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    const type = document.getElementById("type").value;
+    if (!desc || isNaN(amount)) {
+      alert("Please enter valid data");
+      return;
+    }
+    const list = document.getElementById("list");
+    const item = document.createElement("div");
+    item.classList.add("transaction");
+    if (type === "income") {
+      income += amount;
+      balance += amount;
+      item.innerHTML = `<span>${desc}</span><span class="type-income">+₹${amount}</span>`;
+    } else {
+      expense += amount;
+      balance -= amount;
+      item.innerHTML = `<span>${desc}</span><span class="type-expense">-₹${amount}</span>`;
+    }
+    list.appendChild(item);
+    updateUI();
+    document.getElementById("desc").value = "";
+    document.getElementById("amount").value = "";
+  }
+  function updateUI() {
+    document.getElementById("balance").innerText = `₹${balance}`;
+    document.getElementById("income").innerText = `₹${income}`;
+    document.getElementById("expense").innerText = `₹${expense}`;
+  }
+</script>
+</body>
+</html>
